@@ -6,6 +6,7 @@ public class Booking {
     private String roomType;
     private Date startDate;
     private Date endDate;
+    private double totalCost;
 
     // Constructor
     public Booking(int id, String roomType, Date startDate, Date endDate) {
@@ -13,6 +14,7 @@ public class Booking {
         this.roomType = roomType;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.totalCost = totalCost;
     }
 
     // Getters
@@ -32,6 +34,10 @@ public class Booking {
         return endDate;
     }
 
+    public double getTotalCost() {
+        return totalCost;
+    }
+
     // Setters
     public void setId(int id) {
         this.id = id;
@@ -47,5 +53,9 @@ public class Booking {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 }
