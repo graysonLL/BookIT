@@ -48,7 +48,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="179b" class="javax.swing.JButton" binding="btnOk">
         <constraints>
