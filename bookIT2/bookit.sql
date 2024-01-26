@@ -183,17 +183,19 @@ CREATE TABLE `user` (
 --
 
 CREATE TABLE `booking` (
-  `booking_id` int(11) NOT NULL AUTO_INCREMENT,
-  `room_number` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `room_type` varchar(255) NOT NULL,
-  `start_date` date NOT NULL,
-  `total_days` int(11) NOT NULL,
-  `total_cost` double NOT NULL,
-  PRIMARY KEY (`booking_id`),
-  FOREIGN KEY (`room_number`) REFERENCES `room` (`room_number`) ON DELETE CASCADE,
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+ `booking_id` int(11) NOT NULL AUTO_INCREMENT,
+ `room_number` int(11) NOT NULL,
+ `user_id` int(11) NOT NULL,
+ `room_type` varchar(255) NOT NULL,
+ `start_date` DATE NOT NULL,
+ `total_days` int(11) NOT NULL,
+ `total_cost` double NOT NULL,
+ PRIMARY KEY (`booking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+--  FOREIGN KEY (`room_number`) REFERENCES `room` (`room_number`) ON DELETE CASCADE,
+--  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 
 COMMIT;
 
