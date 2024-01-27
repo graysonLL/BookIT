@@ -212,16 +212,20 @@ public class BookingOperations {
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-            //connection successful
             int bookingId;
             String sql = "SELECT * FROM booking WHERE user_id=? LIMIT 1 OFFSET ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2,  bookingChoice - 1);
+            preparedStatement.setInt(2, bookingChoice - 1);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 bookingId = resultSet.getInt("booking_id");
+                int roomNumber = resultSet.getInt("room_number");
+                sql = "UPDATE room SET status='free' WHERE room_number=?";
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setInt(1, roomNumber);
+                preparedStatement.executeUpdate();
                 sql = "DELETE FROM booking WHERE booking_id=?";
                 preparedStatement = conn.prepareStatement(sql);
                 preparedStatement.setInt(1, bookingId);
@@ -238,6 +242,7 @@ public class BookingOperations {
         }
     }
 
+
     private void updateBooking(int userId, int bookingChoice) {
         final String DB_URL = "jdbc:mysql://localhost/bookit?serverTimezone=UTC";
         final String USERNAME = "root";
@@ -247,22 +252,22 @@ public class BookingOperations {
         System.out.println("Select new room type\nRoom types available:\n1. Single Bed\n2. Double Bed\n3. Suite\n4. Deluxe Double Bed");
         int choice = input.nextInt();
 
-        while(choice <1 || choice >4) {
+        while (choice < 1 || choice > 4) {
             System.out.println("Please enter a valid number for the room type");
             choice = input.nextInt();
         }
 
         switch (choice) {
-            case 1 :
+            case 1:
                 newRoomType = "single_bed";
                 break;
-            case 2 :
+            case 2:
                 newRoomType = "double_bed";
                 break;
-            case 3 :
+            case 3:
                 newRoomType = "suite";
                 break;
-            case 4 :
+            case 4:
                 newRoomType = "deluxe_double_bed";
                 break;
         }
@@ -272,11 +277,10 @@ public class BookingOperations {
         int newTotalDays = input.nextInt();
         Room newRoom = getRoom(newRoomType);
         double newTotalCost = newTotalDays * newRoom.price;
-        System.out.println("NEWROOMPRICE"+newRoom.price);
+        System.out.println("NEWROOMPRICE" + newRoom.price);
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-            //connection successful
             int bookingId;
             String sql = "SELECT * FROM booking WHERE user_id=? LIMIT 1 OFFSET ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -286,14 +290,26 @@ public class BookingOperations {
 
             if (resultSet.next()) {
                 bookingId = resultSet.getInt("booking_id");
+                int oldRoomNumber = resultSet.getInt("room_number");
+                sql = "UPDATE room SET status='free' WHERE room_number=?";
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setInt(1, oldRoomNumber);
+                preparedStatement.executeUpdate();
+
                 sql = "UPDATE booking SET room_type=?, total_days=?, total_cost=?, room_number=? WHERE booking_id=?";
                 preparedStatement = conn.prepareStatement(sql);
                 preparedStatement.setString(1, newRoomType);
                 preparedStatement.setInt(2, newTotalDays);
                 preparedStatement.setDouble(3, newTotalCost);
-                preparedStatement.setDouble(4, newRoom.roomNumber);
+                preparedStatement.setInt(4, newRoom.roomNumber);
                 preparedStatement.setInt(5, bookingId);
                 preparedStatement.executeUpdate();
+
+                sql = "UPDATE room SET status='taken' WHERE room_number=?";
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setInt(1, newRoom.roomNumber);
+                preparedStatement.executeUpdate();
+
                 System.out.println("Successfully updated booking\n\n");
             } else {
                 System.out.println("Could not update booking\n\n");
@@ -301,11 +317,10 @@ public class BookingOperations {
 
             conn.close();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
 
 
