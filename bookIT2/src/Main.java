@@ -1,5 +1,6 @@
 import Entities.User;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -8,6 +9,7 @@ public class Main {
         User user;
         Scanner input = new Scanner(System.in);
         BookingOperations bookingOperations;
+        UserOperations userOperations;
 
         while(cond == true) {
             int choice;
@@ -36,7 +38,16 @@ public class Main {
                                     bookingOperations = new BookingOperations(userChoice,user.userId);
                                     break;
                                 case 3 :
-                                    System.out.println("Profile Section");
+                                    boolean profileCond = true;
+                                    while(profileCond == true) {
+                                        System.out.println("\n\nPROFILE SECTION\n1. Update Email\n2. Update Password\n3. Update First Name\n4. Update Last Name\n5. Update Phone Number\n0. Exit");
+                                        System.out.println("Selection from profile section: ");
+                                        int profileChoice = input.nextInt();
+                                        userOperations = new UserOperations(profileChoice,user.userId);
+                                        if(profileChoice == 0) {
+                                            profileCond = false;
+                                        }
+                                    }
                                     break;
                                 case 0 :
                                     System.out.println("Successfully logged out\n");
