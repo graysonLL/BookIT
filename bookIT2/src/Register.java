@@ -13,17 +13,17 @@ public class Register {
 
     private void registerUser() {
         Scanner input = new Scanner(System.in);
-        System.out.print("First Name: ");
+        System.out.print("|First Name: ");
         String firstName = input.nextLine();
-        System.out.print("Last Name: ");
+        System.out.print("|Last Name: ");
         String lastName = input.nextLine();
-        System.out.print("Email: ");
+        System.out.print("|Email: ");
         String email = input.nextLine();
-        System.out.print("Phone Number: ");
+        System.out.print("|Phone Number: ");
         String phone = input.nextLine();
-        System.out.print("Password: ");
+        System.out.print("|Password: ");
         String password = input.nextLine();
-        System.out.print("Confirm Password: ");
+        System.out.print("|Confirm Password: ");
         String confirmPassword = input.nextLine();
 
 
@@ -34,6 +34,8 @@ public class Register {
 
         if (!password.equals(confirmPassword)) {
             System.out.println("Confirm password does not match");
+            System.out.println("Failed to register new user");
+            return;
         }
 
         user = addUserToDatabase(firstName, lastName, email, phone, password);

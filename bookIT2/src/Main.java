@@ -13,22 +13,22 @@ public class Main {
 
         while(cond == true) {
             int choice;
-            System.out.println("   MAIN MENU\n1. Login\n2. Register\n0. Exit");
-            System.out.print("Selection from the Menu: ");
+            System.out.println("-------------------------------\n|          MAIN MENU          |\n|1. Login                     |\n|2. Register                  |\n|0. Exit                      |\n-------------------------------");
+            System.out.print("Selection from Menu: ");
             choice = input.nextInt();
 
             switch (choice) {
                 case 1 :
-                    System.out.println("LOGIN\n");
+                    System.out.println("\n\n-------------------------------------\n|               LOGIN               |");
                     Login loginForm = new Login();
                     user = loginForm.user;
                     if(user != null) {
-                        System.out.println("Succcessful authentication of "+user.firstName+" "+user.lastName);
-                        System.out.println("userId: "+user.userId);
+                        System.out.println("| Succcessfully authenticated user  |\n-------------------------------------");
                         boolean userCondition = true;
                         int userChoice;
                         while(userCondition == true) {
-                            System.out.println("\n\nUSER MENU\n1. Create Booking\n2. View Bookings\n3. View Profile\n0. Logout");
+                            System.out.println("\n\n--------------------------------\n|          USER MENU           |\n|1. Create Booking             |\n|2. View Bookings              |\n|3. View Profile               |\n|0. Logout                     |\n--------------------------------");
+                            System.out.print("Selection from User Menu: ");
                             userChoice = input.nextInt();
                             switch (userChoice) {
                                 case 1 :
@@ -40,8 +40,9 @@ public class Main {
                                 case 3 :
                                     boolean profileCond = true;
                                     while(profileCond == true) {
-                                        System.out.println("\n\nPROFILE SECTION\n1. Update Email\n2. Update Password\n3. Update First Name\n4. Update Last Name\n5. Update Phone Number\n0. Exit");
-                                        System.out.println("Selection from profile section: ");
+                                        System.out.println("\n\n----------------------------------\n|         PROFILE SECTION        |\n|1. View Profile Details         |\n|2. Update Email                 |\n|3. Update Password              |\n|4. Update First Name            |\n|5. Update Last Name             |\n|6. Update Phone Number          |\n|0. Exit                         |\n----------------------------------");
+                                        System.out.print("Selection from Profile Section: ");
+
                                         int profileChoice = input.nextInt();
                                         userOperations = new UserOperations(profileChoice,user.userId);
                                         if(profileChoice == 0) {
@@ -59,21 +60,22 @@ public class Main {
                             }
                         }
                     } else {
-                        System.out.println("authentication cancelled");
+                        System.out.println("authentication failed\n\n");
                     }
                     break;
                 case 2 :
-                    System.out.println("REGISTRATION\n");
+                    System.out.println("--------------------------------\n|         REGISTRATION         |");
                     Register myForm = new Register();
                     User newUser = myForm.user;
                     if(newUser != null) {
-                        System.out.println("Succcessful registration of "+newUser.firstName+" "+newUser.lastName);
+                        System.out.println("| Succcessfully registered user |\n---------------------------------\n\n");
                     } else {
-                        System.out.println("Registration cancelled");
+                        System.out.println("Registration cancelled\n--------------------------------\n\n");
                     }
                     break;
                 case 0 :
-                    System.out.println("Exit");
+                    System.out.println("\nEXITING");
+                    System.out.println("Thank you for using BookIT");
                     cond = false;
                     break;
                 default :

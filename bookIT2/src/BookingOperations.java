@@ -18,18 +18,22 @@ public class BookingOperations {
                 getBookingDetails(userId);
                 break;
             case 2 :
-                System.out.println("VIEW BOOKINGS");
                 int bookingCount = displayBookings(userId);
                 boolean bookingCond = true;
-                while(bookingCond == true && bookingCount > 0) {
-                    System.out.println("Select booking number to edit or press '0' to exit: ");
+                    if(bookingCount == 0) {
+                        System.out.println("No bookings currently");
+                        return;
+                    }
+                    System.out.print("Select booking number to edit or press '0' to exit: ");
                     int bookingChoice = input.nextInt();
                     if(bookingChoice == 0) {
                         bookingCond = false;
                         break;
                     }
                     if(bookingChoice != 0 && bookingChoice > 0 && bookingChoice <= bookingCount) {
-                        System.out.println("Action to be performed\n1. Update\n2. Delete\n0. Cancel");
+                        System.out.println("\n\n--------------------------------\n|         BOOKING MENU         |\n|1. Update                     |\n|2. Delete                     |\n|0. Cancel                     |\n--------------------------------");
+                        System.out.print("Selection from booking menu: ");
+
                         int bookingAction = input.nextInt();
                         switch (bookingAction) {
                             case 1 :
@@ -46,9 +50,8 @@ public class BookingOperations {
                                 break;
                         }
                     } else {
-                        System.out.println("Please select valid booking");
+                        System.out.println("Booking does not exist");
                     }
-                }
                 break;
             case 3 :
                 System.out.println("Returning to user menu");
@@ -83,7 +86,6 @@ public class BookingOperations {
         totalDays = input.nextInt();
 
         room = getRoom(roomTypeSelectedItem);
-        System.out.println("Reservation details: "+room.roomNumber+totalDays);
         double totalCost = room.price*totalDays;
         createBooking(room.roomNumber, roomTypeSelectedItem, totalDays, totalCost, userId);
     }
@@ -112,7 +114,7 @@ public class BookingOperations {
                 PreparedStatement preparedStatementUpdate = conn.prepareStatement(sqlUpdate);
                 preparedStatementUpdate.setInt(1, room.roomNumber);
                 preparedStatementUpdate.executeUpdate();
-                System.out.println("A new booking was inserted successfully!");
+                System.out.println("Booking successfully created");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -189,19 +191,19 @@ public class BookingOperations {
         } catch(Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println("\n\n-------------------------------------------\n|              BOOKING LIST               |\n-------------------------------------------");
         for (Booking booking : bookings) {
             count++;
-            System.out.println("Booking number: "+count);
-            System.out.println("Booking ID: " + booking.bookingId);
-            System.out.println("Room Number: " + booking.roomNumber);
-            System.out.println("User ID: " + booking.userId);
-            System.out.println("Room Type: " + booking.roomType);
-//            System.out.println("Start Date: " + booking.startDate);
-            System.out.println("Total Days: " + booking.totalDays);
-            System.out.println("Total Cost: " + booking.totalCost);
-            System.out.println("---------------------------");
+            System.out.printf("|%-20s %-20d|\n", "Booking number: ", count);
+            System.out.printf("|%-20s %-20d|\n", "Room Number: ", booking.roomNumber);
+            System.out.printf("|%-20s %-20s|\n", "Room Type: ", booking.roomType);
+//    System.out.printf("|%-20s %-20s|\n", "Start Date: ", booking.startDate);
+            System.out.printf("|%-20s %-20d|\n", "Total Days: ", booking.totalDays);
+            System.out.printf("|%-20s %-20.2f|\n", "Total Cost: ", booking.totalCost);
+            System.out.println("-------------------------------------------");
         }
+
+
         return count;
     }
 
@@ -249,7 +251,9 @@ public class BookingOperations {
         final String PASSWORD = "";
         String newRoomType = "";
 
-        System.out.println("Select new room type\nRoom types available:\n1. Single Bed\n2. Double Bed\n3. Suite\n4. Deluxe Double Bed");
+        System.out.println("\n\n--------------------------------\n|         UPDATE MENU          |\n|Room types available:         |\n|1. Single Bed                 |\n|2. Double Bed                 |\n|3. Suite                      |\n|4. Deluxe Double Bed          |\n--------------------------------");
+        System.out.print("Select room type: ");
+
         int choice = input.nextInt();
 
         while (choice < 1 || choice > 4) {
@@ -273,11 +277,10 @@ public class BookingOperations {
         }
 
 
-        System.out.print("Enter new amount of days: ");
+        System.out.print("Enter amount of days: ");
         int newTotalDays = input.nextInt();
         Room newRoom = getRoom(newRoomType);
         double newTotalCost = newTotalDays * newRoom.price;
-        System.out.println("NEWROOMPRICE" + newRoom.price);
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);

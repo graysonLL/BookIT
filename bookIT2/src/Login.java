@@ -8,9 +8,9 @@ public class Login {
 
     public Login() {
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter Email: ");
+        System.out.print("| Enter Email: ");
         String email = input.nextLine();
-        System.out.print("Enter Password: ");
+        System.out.print("| Enter Password: ");
         String password = input.nextLine();
 
         user = getAuthenticatedUser(email, password);
