@@ -10,4 +10,10 @@ Scalability: While currently featuring a single hotel, our system is built to sc
 Intuitive Design: We've adopted a clean and intuitive design to enhance user navigation. The interface is thoughtfully crafted to provide a straightforward booking process, minimizing complexity and maximizing user satisfaction.  
 
 In order to start the frontend Homepage:
-npm run start
+npm run start  
+
+In order to run the java system:   
+Ensure that the file "mysql-connector-j-8.3.0.jar" is downloaded in the folder.  
+Add the "mysql-connector-j-8.3.0.jar" file as a dependency within the project structure.  
+
+
