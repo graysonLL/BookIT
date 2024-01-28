@@ -187,7 +187,7 @@ CREATE TABLE `booking` (
  `room_number` int(11) NOT NULL,
  `user_id` int(11) NOT NULL,
  `room_type` varchar(255) NOT NULL,
- `start_date` DATE NOT NULL,
+ `start_date` varchar(255) NOT NULL,
  `total_days` int(11) NOT NULL,
  `total_cost` double NOT NULL,
  PRIMARY KEY (`booking_id`)
