@@ -10,6 +10,7 @@ import java.util.List;
 public class BookingOperations {
     public String roomTypeSelectedItem = "";
     public int totalDays;
+    String startDate;
     Scanner input = new Scanner(System.in);
 
     public BookingOperations(int choice, int userId) {
@@ -81,31 +82,31 @@ public class BookingOperations {
                 roomTypeSelectedItem = "deluxe_double_bed";
                 break;
         }
-
+        input.nextLine();
+        System.out.print("Start Date [YYYY-MM-DD]: ");
+        startDate = input.nextLine();
         System.out.print("Number of days: ");
         totalDays = input.nextInt();
 
         room = getRoom(roomTypeSelectedItem);
         double totalCost = room.price*totalDays;
-        createBooking(room.roomNumber, roomTypeSelectedItem, totalDays, totalCost, userId);
+        createBooking(room.roomNumber, roomTypeSelectedItem, totalDays, totalCost, userId, startDate);
     }
     //(int roomNumber, int userId, String roomType, Date startDate, int totalDays, double totalCost)
-    private void createBooking(int roomNumber, String roomType, int totalDays, double totalCost, int userId) {
+    private void createBooking(int roomNumber, String roomType, int totalDays, double totalCost, int userId, String startDate) {
         final String DB_URL = "jdbc:mysql://localhost/bookit?serverTimezone=UTC";
         final String USERNAME = "root";
         final String PASSWORD = "";
-        // add user_id and one more ? in values
+
         String sql = "INSERT INTO booking (room_number, user_id, room_type, start_date, total_days, total_cost) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-
-            Date specificDate = new Date(124, 0, 24);
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, roomNumber);
             statement.setInt(2, userId);
             statement.setString(3, roomType);
-            statement.setDate(4, specificDate);
+            statement.setString(4, startDate);
             statement.setInt(5, totalDays);
             statement.setDouble(6, totalCost);
             int rowsInserted = statement.executeUpdate();
@@ -179,10 +180,9 @@ public class BookingOperations {
                 booking.roomNumber = resultSet.getInt("room_number");
                 booking.userId = resultSet.getInt("user_id");
                 booking.roomType = resultSet.getString("room_type");
-//                booking.startDate = resultSet.getInt("start_date");
                 booking.totalDays = resultSet.getInt("total_days");
                 booking.totalCost = resultSet.getInt("total_cost");
-
+                booking.startDate = resultSet.getString("start_date");
                 bookings.add(booking);
             }
 
@@ -197,7 +197,7 @@ public class BookingOperations {
             System.out.printf("|%-20s %-20d|\n", "Booking number: ", count);
             System.out.printf("|%-20s %-20d|\n", "Room Number: ", booking.roomNumber);
             System.out.printf("|%-20s %-20s|\n", "Room Type: ", booking.roomType);
-//    System.out.printf("|%-20s %-20s|\n", "Start Date: ", booking.startDate);
+            System.out.printf("|%-20s %-20s|\n", "Start Date: ", booking.startDate);
             System.out.printf("|%-20s %-20d|\n", "Total Days: ", booking.totalDays);
             System.out.printf("|%-20s %-20.2f|\n", "Total Cost: ", booking.totalCost);
             System.out.println("-------------------------------------------");
@@ -275,8 +275,9 @@ public class BookingOperations {
                 newRoomType = "deluxe_double_bed";
                 break;
         }
-
-
+        input.nextLine();
+        System.out.print("Start Date [YYYY-MM-DD]: ");
+        String newStartDate = input.nextLine();
         System.out.print("Enter amount of days: ");
         int newTotalDays = input.nextInt();
         Room newRoom = getRoom(newRoomType);
@@ -299,13 +300,14 @@ public class BookingOperations {
                 preparedStatement.setInt(1, oldRoomNumber);
                 preparedStatement.executeUpdate();
 
-                sql = "UPDATE booking SET room_type=?, total_days=?, total_cost=?, room_number=? WHERE booking_id=?";
+                sql = "UPDATE booking SET room_type=?, total_days=?, total_cost=?, room_number=?, start_date=? WHERE booking_id=?";
                 preparedStatement = conn.prepareStatement(sql);
                 preparedStatement.setString(1, newRoomType);
                 preparedStatement.setInt(2, newTotalDays);
                 preparedStatement.setDouble(3, newTotalCost);
                 preparedStatement.setInt(4, newRoom.roomNumber);
-                preparedStatement.setInt(5, bookingId);
+                preparedStatement.setString(5, newStartDate);
+                preparedStatement.setInt(6, bookingId);
                 preparedStatement.executeUpdate();
 
                 sql = "UPDATE room SET status='taken' WHERE room_number=?";
