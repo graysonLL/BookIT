@@ -7,7 +7,7 @@ public class Booking {
     public int roomNumber;
     public int userId;
     public String roomType;
-    public Date startDate;
+    public String startDate;
     public int totalDays;
     public double totalCost;
 }
