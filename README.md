@@ -14,7 +14,7 @@ npm run start
 
 In order to run the java system:   
 Ensure that the file "mysql-connector-j-8.3.0.jar" is downloaded in the folder.  
-Add the "mysql-connector-j-8.3.0.jar" file as a dependency within the project structure. In some cases, this would require you to move the jar file into another directory and manually adding it as a dependency in the project structure yourself.
+Add the "mysql-connector-j-8.3.0.jar" file as a dependency within the project structure. In some cases, this would require you to move the jar file into another directory and to manually add it as a dependency in the project structure yourself.
 Remember to also run XAMPP and import the SQL file provided.
 
 
